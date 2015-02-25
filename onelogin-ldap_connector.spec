@@ -12,6 +12,7 @@ Source0:	https://s3.amazonaws.com/onelogin-downloads/ldapc/1_25/ldap_connector.z
 NoSource:	0
 Group:		Libraries
 URL:		https://www.onelogin.com/product/directory
+Requires:	jre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
