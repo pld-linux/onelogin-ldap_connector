@@ -4,7 +4,7 @@
 Summary:	Onelogin Directory Integration
 Name:		onelogin-ldap_connector
 Version:	1.25
-Release:	0.1
+Release:	0.2
 License:	?
 # Forever free account can be obtained from https://www.onelogin.com/signup
 Source0:	https://s3.amazonaws.com/onelogin-downloads/ldapc/1_25/ldap_connector.zip
@@ -31,8 +31,9 @@ domains via a single connector.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_appdir}
+install -d $RPM_BUILD_ROOT{%{_appdir},/var/log/ol-ldapc}
 cp -a ldap-connector.jar lib resources $RPM_BUILD_ROOT%{_appdir}
+ln -s /var/log/ol-ldapc $RPM_BUILD_ROOT%{_appdir}/log
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -43,6 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_appdir}
 %{_appdir}/ldap-connector.jar
 %dir %{_appdir}/lib
+%{_appdir}/log
 %dir %{_appdir}/lib/java
 %{_appdir}/lib/java/commons-codec-1.6.jar
 %{_appdir}/lib/java/commons-io-2.4.jar
@@ -56,3 +58,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_appdir}/resources
 # use ca-certificates instead?
 %{_appdir}/resources/cert.crt
+
+%dir /var/log/ol-ldapc
