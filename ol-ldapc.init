@@ -4,8 +4,8 @@
 # chkconfig:	345 <start_level> <stop_level>
 # description:	ol-ldapc Onelogin Directory Integration
 # processname:	java
-# config:
-# pidfile:
+# config: /etc/sysconfig/ol-ldapc
+# pidfile: /var/run/ol-ldapc.pid
 #
 
 # Source function library
@@ -49,7 +49,6 @@ start() {
 		--object-classes "$OBJECT_CLASSES" \
 		--base-dn "$BASEDN" \
 		--token "$TOKEN"
-
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ol-ldapc
 }
@@ -62,22 +61,8 @@ stop() {
 
 	# Stop daemons.
 	msg_stopping "OneLogin LDAP Connector"
-	killproc java
-	killproc --pidfile $pidfile java -TERM
+	killproc --pidfile $pidfile java
 	rm -f /var/lock/subsys/ol-ldapc
-}
-
-reload() {
-	if [ ! -f /var/lock/subsys/ol-ldapc ]; then
-		msg_not_running "OneLogin LDAP Connector"
-		RETVAL=7
-		return
-	fi
-
-	msg_reloading "OneLogin LDAP Connector"
-	killproc java -HUP
-	killproc --pidfile $pidfile java -HUP
-	RETVAL=$?
 }
 
 condrestart() {
@@ -107,18 +92,10 @@ case "$1" in
   try-restart)
 	condrestart 0
 	;;
-# include force-reload here if program allows reloading without restart
-# otherwise remove reload action and support force-reload as restart if running
-  reload|force-reload)
-	reload
-	;;
-# use this one if program doesn't support reloading without restart
   force-reload)
 	condrestart 7
 	;;
   status)
-	status ol-ldapc
-	status --pidfile $pidfile ol-ldapc
 	status --pidfile $pidfile ol-ldapc java
 	RETVAL=$?
 	;;
