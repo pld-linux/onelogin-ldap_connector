@@ -4,7 +4,7 @@
 Summary:	Onelogin Directory Integration
 Name:		onelogin-ldap_connector
 Version:	1.25
-Release:	0.3
+Release:	0.4
 License:	?
 Group:		Libraries
 # Forever free account can be obtained from https://www.onelogin.com/signup
@@ -18,7 +18,7 @@ Requires:	jre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_appdir	%{_prefix}/lib/%{name}
+%define		_appdir	%{_prefix}/lib/ol-ldapc
 
 %description
 OneLogin allows you to synchronize users with any number of

@@ -30,6 +30,7 @@ TOKEN=
 # Get service config - may override defaults
 [ -f /etc/sysconfig/ol-ldapc ] && . /etc/sysconfig/ol-ldapc
 
+appdir="/usr/lib/ol-ldapc"
 pidfile="/var/run/ol-ldapc.pid"
 
 start() {
@@ -40,7 +41,7 @@ start() {
 	fi
 
 	msg_starting "OneLogin LDAP Connector"
-	java -XX:-UseGCOverheadLimit -Xmx64M -Xms64M -jar /usr/lib/onelogin-ldap_connector/ldap-connector.jar \
+	java -XX:-UseGCOverheadLimit -Xmx64M -Xms64M -jar $appdir/ldap-connector.jar \
 		--token "$TOKEN" --sync-interval 30 --object-classes "posixAccount" --base-dn "$BASEDN"
 
 	RETVAL=$?
