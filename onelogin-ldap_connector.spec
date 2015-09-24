@@ -4,7 +4,7 @@
 Summary:	Onelogin Directory Integration
 Name:		onelogin-ldap_connector
 Version:	1.25
-Release:	0.4
+Release:	0.5
 License:	?
 Group:		Libraries
 # Forever free account can be obtained from https://www.onelogin.com/signup

@@ -11,3 +11,6 @@ SYNC_INTERVAL=30
 
 # LDAP object classes to sync
 OBJECT_CLASSES="posixAccount"
+
+# Any other options
+OPTIONS=""
