@@ -4,7 +4,7 @@
 Summary:	Onelogin Directory Integration
 Name:		onelogin-ldap_connector
 Version:	1.25
-Release:	0.2
+Release:	0.3
 License:	?
 Group:		Libraries
 # Forever free account can be obtained from https://www.onelogin.com/signup
@@ -12,6 +12,7 @@ Source0:	https://s3.amazonaws.com/onelogin-downloads/ldapc/1_25/ldap_connector.z
 # NoSource0-md5:	32d0949fba09e8377535768f8b570575
 NoSource:	0
 Source1:	ol-ldapc.init
+Source2:	ol-ldapc.sysconfig
 URL:		https://www.onelogin.com/product/directory
 Requires:	jre
 BuildArch:	noarch
@@ -32,10 +33,11 @@ domains via a single connector.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_appdir},/var/log/ol-ldapc,/etc/rc.d/init.d}
+install -d $RPM_BUILD_ROOT{%{_appdir},/var/log/ol-ldapc,/etc/{rc.d/init.d,sysconfig}}
 cp -a ldap-connector.jar lib resources $RPM_BUILD_ROOT%{_appdir}
 ln -s /var/log/ol-ldapc $RPM_BUILD_ROOT%{_appdir}/log
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ol-ldapc
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ol-ldapc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,6 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README
 %attr(754,root,root) /etc/rc.d/init.d/ol-ldapc
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ol-ldapc
 %dir %{_appdir}
 %{_appdir}/ldap-connector.jar
 %dir %{_appdir}/lib

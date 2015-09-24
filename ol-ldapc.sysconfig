@@ -1,0 +1,7 @@
+# Config for OneLogin LDAP Connector
+
+# LDAP base DN
+BASEDN="dc=example,dc=org"
+
+# Auth token
+TOKEN=
