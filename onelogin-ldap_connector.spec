@@ -6,12 +6,12 @@ Name:		onelogin-ldap_connector
 Version:	1.25
 Release:	0.2
 License:	?
+Group:		Libraries
 # Forever free account can be obtained from https://www.onelogin.com/signup
 Source0:	https://s3.amazonaws.com/onelogin-downloads/ldapc/1_25/ldap_connector.zip
 # NoSource0-md5:	32d0949fba09e8377535768f8b570575
 NoSource:	0
-Source1:	service.init
-Group:		Libraries
+Source1:	ol-ldapc.init
 URL:		https://www.onelogin.com/product/directory
 Requires:	jre
 BuildArch:	noarch
