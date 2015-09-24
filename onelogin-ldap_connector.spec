@@ -15,6 +15,7 @@ Source1:	ol-ldapc.init
 Source2:	ol-ldapc.sysconfig
 URL:		https://www.onelogin.com/product/directory
 Requires:	jre
+Requires:	rc-scripts >= 0.4.3.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -41,6 +42,14 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ol-ldapc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%service ol-ldapc restart
+
+%preun
+if [ "$1" = "0" ]; then
+	%service -q ol-ldapc stop
+fi
 
 %files
 %defattr(644,root,root,755)

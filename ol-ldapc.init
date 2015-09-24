@@ -25,7 +25,9 @@ else
 fi
 
 BASEDN="dc=example,dc=org"
-TOKEN=
+TOKEN=""
+SYNC_INTERVAL=30
+OBJECT_CLASSES="posixAccount"
 
 # Get service config - may override defaults
 [ -f /etc/sysconfig/ol-ldapc ] && . /etc/sysconfig/ol-ldapc
@@ -41,8 +43,12 @@ start() {
 	fi
 
 	msg_starting "OneLogin LDAP Connector"
-	java -XX:-UseGCOverheadLimit -Xmx64M -Xms64M -jar $appdir/ldap-connector.jar \
-		--token "$TOKEN" --sync-interval 30 --object-classes "posixAccount" --base-dn "$BASEDN"
+	daemon --fork --chdir "$appdir" \
+		java -XX:-UseGCOverheadLimit -Xmx64M -Xms64M -jar "$appdir/ldap-connector.jar" \
+		--sync-interval "$SYNC_INTERVAL" \
+		--object-classes "$OBJECT_CLASSES" \
+		--base-dn "$BASEDN" \
+		--token "$TOKEN"
 
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ol-ldapc

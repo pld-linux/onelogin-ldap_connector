@@ -4,4 +4,10 @@
 BASEDN="dc=example,dc=org"
 
 # Auth token
-TOKEN=
+TOKEN=""
+
+# interval to poll
+SYNC_INTERVAL=30
+
+# LDAP object classes to sync
+OBJECT_CLASSES="posixAccount"
