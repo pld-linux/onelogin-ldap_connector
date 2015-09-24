@@ -74,4 +74,4 @@ fi
 # use ca-certificates instead?
 %{_appdir}/resources/cert.crt
 
-%dir /var/log/ol-ldapc
+%dir %attr(700,root,root) /var/log/ol-ldapc
