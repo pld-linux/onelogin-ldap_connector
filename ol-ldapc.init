@@ -29,27 +29,15 @@ TOKEN=""
 SYNC_INTERVAL=30
 OBJECT_CLASSES="posixAccount"
 JAVA_OPTIONS="-XX:-UseGCOverheadLimit -Xmx64M -Xms64M"
+USER="http"
 OPTIONS=""
 
 # Get service config - may override defaults
-[ -f /etc/sysconfig/ol-ldapc ] && . /etc/sysconfig/ol-ldapc
+[ -r /etc/sysconfig/ol-ldapc ] && . /etc/sysconfig/ol-ldapc
 
 appdir="/usr/lib/ol-ldapc"
 pidfile="/var/run/ol-ldapc.pid"
-
-daemon_start() {
-	java \
-		-jar $appdir/ldap-connector.jar \
-		--sync-interval "$SYNC_INTERVAL" \
-		--object-classes "$OBJECT_CLASSES" \
-		--base-dn "$BASEDN" \
-		--token "$TOKEN" \
-		$OPTIONS \
-		> /dev/null 2>&1 &
-	RETVAL=$?
-	pid=$!
-	echo "$pid" > $pidfile
-}
+logdir="/var/log/ol-ldapc"
 
 start() {
 	# Check if the service is already running?
@@ -59,7 +47,26 @@ start() {
 	fi
 
 	msg_starting "OneLogin LDAP Connector"
-	daemon --chdir "$appdir" setsid "$0" daemon_start
+
+	# make pid and log dir accessilbe for changed user
+	touch "$pidfile"
+	chown "$USER" "$pidfile"
+	chown "$USER" "$logdir"
+
+	# using ssd loses pid. so force rc-logging=yes, also when using ssd need to pass --fork
+	RC_LOGGING=yes
+
+	daemon \
+		--chdir "$appdir" \
+		--user "$USER" \
+		--pidfile "$pidfile" \
+		--makepid \
+		java -jar $appdir/ldap-connector.jar "$@" \
+		--sync-interval "$SYNC_INTERVAL" \
+		--object-classes "$OBJECT_CLASSES" \
+		--base-dn "$BASEDN" \
+		--token "$TOKEN" \
+		$OPTIONS
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ol-ldapc
 }
@@ -105,9 +112,6 @@ case "$1" in
 	;;
   force-reload)
 	condrestart 7
-	;;
-  daemon_start)
-	daemon_start "$@"
 	;;
   status)
 	status --pidfile $pidfile ol-ldapc java

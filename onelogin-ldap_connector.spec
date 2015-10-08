@@ -15,7 +15,7 @@ Source1:	ol-ldapc.init
 Source2:	ol-ldapc.sysconfig
 URL:		https://www.onelogin.com/product/directory
 Requires:	jre
-Requires:	rc-scripts >= 0.4.3.7
+Requires:	rc-scripts >= 0.4.15
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
