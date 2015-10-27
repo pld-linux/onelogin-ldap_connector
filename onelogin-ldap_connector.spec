@@ -3,13 +3,13 @@
 # - system libs?
 Summary:	Onelogin Directory Integration
 Name:		onelogin-ldap_connector
-Version:	1.25
-Release:	0.5
+Version:	1.31
+Release:	0.1
 License:	?
 Group:		Libraries
 # Forever free account can be obtained from https://www.onelogin.com/signup
-Source0:	https://s3.amazonaws.com/onelogin-downloads/ldapc/1_25/ldap_connector.zip
-# NoSource0-md5:	32d0949fba09e8377535768f8b570575
+Source0:	http://download1653.mediafire.com/q62z8dgnntrg/2kex1a4ynm1kjxt/ldap_connector_%{version}.zip
+# NoSource0-md5:	3905df2ac71571accb45342ca07efbb8
 NoSource:	0
 Source1:	ol-ldapc.init
 Source2:	ol-ldapc.sysconfig
@@ -31,6 +31,7 @@ domains via a single connector.
 
 %prep
 %setup -qc
+mv ldap_connector/* .
 
 %install
 rm -rf $RPM_BUILD_ROOT
